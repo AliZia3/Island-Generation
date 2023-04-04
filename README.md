@@ -92,8 +92,7 @@ java -jar visualizer/visualizer.jar -i img/lagoon.mesh -o img/lagoon.svg
 
 ### A4 Backlog
 
-| Id  | Feature title                                                         | Start    | End      | Status |
-| :-: | --------------------------------------------------------------------- | -------- | -------- | ------ |
-| F01 | Creating Graph ADT to represent nodes and edges                       | 29/03/23 | 20/02/23 | D      |
-| F02 | Interface to define public contract of "Finding path between 2 nodes" | 29/02/23 | 22/02/23 | D      |
-| F02 | Implementation of pathfinder algorithm (Dijkstra)                     | 29/02/23 | 22/02/23 | D      |
+| Id  | Feature title                                     | Start    | End      | Status |
+| :-: | ------------------------------------------------- | -------- | -------- | ------ |
+| F01 | Creating Graph ADT to represent nodes and edges   | 29/03/23 | 04/04/23 | D      |
+| F02 | Implementation of pathfinder algorithm (Dijkstra) | 29/03/23 | 04/04/23 | D      |
