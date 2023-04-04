@@ -5,7 +5,7 @@ import ca.mcmaster.cas.se2aa4.a2.io.Structs.Mesh;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs.Vertex;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.Properties.Properties;
-import ca.mcmaster.cas.se2aa4.a3.island.lagoon.Lagoon;
+import ca.mcmaster.cas.se2aa4.a3.island.Lagoon.Lagoon;
 
 import static org.junit.Assert.*;
 

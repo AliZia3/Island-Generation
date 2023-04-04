@@ -10,17 +10,16 @@ public class Rivers {
 
     public Rivers(Structs.Mesh iMesh) {
         this.aMesh = iMesh;
-        
+
     }
 
     public Structs.Mesh generateRivers(int numRivers) {
         Structs.Mesh.Builder iMesh = Structs.Mesh.newBuilder()
-            .addAllVertices(aMesh.getVerticesList())
-            .addAllSegments(aMesh.getSegmentsList())
-            .addAllPolygons(aMesh.getPolygonsList());
+                .addAllVertices(aMesh.getVerticesList())
+                .addAllSegments(aMesh.getSegmentsList())
+                .addAllPolygons(aMesh.getPolygonsList());
 
-
-        for(int i=0; i<numRivers; i++){
+        for (int i = 0; i < numRivers; i++) {
             Structs.Polygon p = findPoly();
             Structs.Segment.Builder s = Structs.Segment.newBuilder(iMesh.getSegments(p.getSegmentIdxsList().get(0)));
             s.addProperties(Properties.getLakeProps());
@@ -30,13 +29,13 @@ public class Rivers {
         return iMesh.build();
     }
 
-    public Structs.Polygon findPoly(){
+    public Structs.Polygon findPoly() {
         Random random = new Random();
 
         Structs.Polygon p = aMesh.getPolygons(random.nextInt(aMesh.getPolygonsCount()));
 
-        while(!p.getProperties(0).getValue().equals(Properties.landColors) )
-        p = aMesh.getPolygons(random.nextInt(aMesh.getPolygonsCount()));
+        while (!p.getProperties(0).getValue().equals(Properties.landColors))
+            p = aMesh.getPolygons(random.nextInt(aMesh.getPolygonsCount()));
 
         return p;
     }

@@ -1,4 +1,4 @@
-package ca.mcmaster.cas.se2aa4.a3.island.lagoon;
+package ca.mcmaster.cas.se2aa4.a3.island.Lagoon;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.Properties.Properties;

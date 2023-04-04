@@ -15,13 +15,12 @@ import ca.mcmaster.cas.se2aa4.a3.island.elevation.Plains;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.RockMountain;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.Temp;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.Volcano;
-import ca.mcmaster.cas.se2aa4.a3.island.lagoon.Lagoon;
+import ca.mcmaster.cas.se2aa4.a3.island.Lagoon.Lagoon;
 import ca.mcmaster.cas.se2aa4.a3.island.lakes.Lakes;
 import ca.mcmaster.cas.se2aa4.a3.island.lakes.Rivers;
 
 public class islandGenerator {
     private Structs.Mesh aMesh;
-    // public static boolean biomeCond;
     public static String biomeArg;
 
     public islandGenerator() throws IOException {
@@ -29,7 +28,6 @@ public class islandGenerator {
     }
 
     public Structs.Mesh generate(Configuration config) throws IOException {
-        // biomeCond = (config.biomes() == null) ? false : true;
         biomeArg = (config.biomes());
         MeshDimension dim = new MeshDimension(aMesh); // finds mesh dimensions
         Shape iMesh = null;
@@ -53,11 +51,9 @@ public class islandGenerator {
         mesh = new Volcano().build(mesh);
         mesh = new RockMountain().build(mesh);
         mesh = new Beaches(mesh).enrichBeaches();
-        mesh = new Plains().addElevation(mesh); //index 3?
-        mesh = new Temp(mesh).enrichTemp(); //index 4
+        mesh = new Plains().addElevation(mesh); // index 3?
+        mesh = new Temp(mesh).enrichTemp(); // index 4
         mesh = new Biomes(mesh).enrichBiomes();
-        
-        
 
         // Seed generation
         SeedGen seedGen = new SeedGen();
