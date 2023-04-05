@@ -1,7 +1,4 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,22 +57,6 @@ public class PathFindingTest {
         graph.addEdge(edgeDE);
 
         dijkstra = new DijkstrasAlgorithm(graph);
-
-        // edgeAB = new Edge(nodeA, nodeB, 1);
-        // edgeAC = new Edge(nodeA, nodeC, 3);
-        // edgeBC = new Edge(nodeB, nodeC, 1);
-        // edgeBD = new Edge(nodeB, nodeD, 2);
-        // edgeCD = new Edge(nodeC, nodeD, 1);
-        // edgeDE = new Edge(nodeD, nodeE, 2);
-        // edgeEC = new Edge(nodeE, nodeC, 1);
-
-        // graph.addEdge(edgeAB);
-        // graph.addEdge(edgeAC);
-        // graph.addEdge(edgeBC);
-        // graph.addEdge(edgeBD);
-        // graph.addEdge(edgeCD);
-        // graph.addEdge(edgeDE);
-        // graph.addEdge(edgeEC);
     }
 
     @Test
@@ -108,9 +89,25 @@ public class PathFindingTest {
     }
 
     @Test
-    public void testPathFinder_graphShortestPathSizeIsThree() {
+    public void testPathFinder_graphShortestPath_shouldBeSizeThree() {
         List<Edge> path = dijkstra.findPath(nodeA, nodeE);
         assertEquals(3, path.size());
+    }
+
+    @Test
+    public void testPathFinder_weightForEdgeAB_shouldBe1() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeB);
+        assertEquals(1.0, path.get(0).getWeight(), 0.0);
+    }
+
+    @Test
+    public void testPathFinder_graphShortestPathWeight_shouldBeTen() {
+        double totalWeight = 0;
+        List<Edge> path = dijkstra.findPath(nodeA, nodeE);
+        for (Edge edge : path) {
+            totalWeight += edge.getWeight();
+        }
+        assertEquals(10.0, totalWeight, 0.0);
     }
 
     @Test
@@ -120,7 +117,7 @@ public class PathFindingTest {
     }
 
     @Test
-    public void testPathFinder_DestinationNodeForEdgeAB_ShouldBeMontreal() {
+    public void testPathFinder_DestinationNodeForEdgeAB_shouldBeMontreal() {
         List<Edge> path = dijkstra.findPath(nodeA, nodeB);
         assertEquals("Montreal", path.get(0).getDestination().getName());
     }
