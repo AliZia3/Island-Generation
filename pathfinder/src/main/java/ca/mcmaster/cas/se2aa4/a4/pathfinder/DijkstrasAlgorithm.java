@@ -1,12 +1,18 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Set;
+
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Edge;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
@@ -22,7 +28,7 @@ public class DijkstrasAlgorithm implements PathFinder {
     // Got most of the bare bones ideas from here
     // https://github.com/rabestro/graph-pathfinding-algorithms/blob/master/algorithm/src/main/java/lv/id/jc/algorithm/graph/DijkstrasAlgorithm.java
     @Override
-    public List<Edge> findPath(Node source, Node target) {
+    public List<Edge> findPath(Node source, Node destination) {
         Deque<Node> queue = new ArrayDeque<>();
         Map<Node, Double> distances = new HashMap<>();
         Map<Node, Edge> previous = new HashMap<>();
@@ -31,9 +37,9 @@ public class DijkstrasAlgorithm implements PathFinder {
 
         while (!queue.isEmpty()) {
             Node prev = queue.removeFirst();
-            for (Edge edge : graph.getEdges()) {
+            for (Edge edge : graph.getEdgesForNode(prev)) {
                 Node node = edge.getDestination();
-                double distance = distances.getOrDefault(prev, Double.MAX_VALUE) + edge.getWeight();
+                double distance = distances.get(prev) + edge.getWeight();
                 if (distance < distances.getOrDefault(node, Double.MAX_VALUE)) {
                     previous.put(node, edge);
                     distances.put(node, distance);
@@ -41,10 +47,9 @@ public class DijkstrasAlgorithm implements PathFinder {
                 }
             }
         }
-
-        if (previous.containsKey(target) || source.equals(target)) {
+        if (previous.containsKey(destination) || source.equals(destination)) {
             LinkedList<Edge> path = new LinkedList<>();
-            Node current = target;
+            Node current = destination;
             while (previous.get(current) != null) {
                 Edge edge = previous.get(current);
                 path.addFirst(edge);
@@ -56,4 +61,3 @@ public class DijkstrasAlgorithm implements PathFinder {
         }
     }
 }
-
