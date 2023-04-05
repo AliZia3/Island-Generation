@@ -13,7 +13,6 @@ public class SeedGen {
 
     public Structs.Mesh getMesh(long seed) throws IOException {
         String seedStr = "img/" + String.valueOf(seed) + ".mesh";
-        System.out.println(seedStr);
         return new MeshFactory().read(seedStr);
     }
 }

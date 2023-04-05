@@ -204,7 +204,6 @@ public class Properties {
                 .setValue("5")
                 .build();
     }
-
     public static Structs.Property get_other_temperature() {
         return Structs.Property.newBuilder()
                 .setKey("temperature")
@@ -225,5 +224,6 @@ public class Properties {
                 .setValue(plainsColors)
                 .build();
     }
+
 
 }

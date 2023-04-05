@@ -47,4 +47,5 @@ public class Lagoon {
     public boolean isWithinLagoon(double x, double y) {
         return Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)) <= radius;
     }
+
 }

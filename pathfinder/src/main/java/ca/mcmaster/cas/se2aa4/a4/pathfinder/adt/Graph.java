@@ -27,7 +27,7 @@ public class Graph {
         Node source = edge.getSource();
         source.getOutgoingEdges().add(edge);
     }
-    
+
     public void removeEdge(Edge edge) {
         edges.remove(edge);
         Node source = edge.getSource();

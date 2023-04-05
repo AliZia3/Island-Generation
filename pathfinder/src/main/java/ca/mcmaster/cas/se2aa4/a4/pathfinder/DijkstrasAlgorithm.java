@@ -37,6 +37,7 @@ public class DijkstrasAlgorithm implements PathFinder {
 
         while (!queue.isEmpty()) {
             Node prev = queue.removeFirst();
+            // Can change to graph.getEdges() to only get paths from start node to end node
             for (Edge edge : graph.getEdgesForNode(prev)) {
                 Node node = edge.getDestination();
                 double distance = distances.get(prev) + edge.getWeight();

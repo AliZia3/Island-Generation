@@ -40,9 +40,10 @@ public class Aquifers {
                     || poly.getProperties(0).getValue() == Properties.beachColors) {
                 iMesh.addPolygons(x);
             }
+
         }
 
-        for (int i = 0; i < aMesh.getPolygonsCount(); i++) {
+        for (int i=0; i<aMesh.getPolygonsCount(); i++) {
             if (val == 0) {
                 break;
             }

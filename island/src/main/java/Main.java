@@ -7,7 +7,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.islandgen.islandGenerator;
 public class Main {
     public static void main(String[] args) throws IOException {
         Configuration config = new Configuration(args);
-        Structs.Mesh iMesh = new islandGenerator().generate(config);
+        Structs.Mesh iMesh = new islandGenerator(config).generate();
         new MeshFactory().write(iMesh, config.output());
     }
 }

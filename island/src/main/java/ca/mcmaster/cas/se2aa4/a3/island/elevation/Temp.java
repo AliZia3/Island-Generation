@@ -21,33 +21,30 @@ public class Temp {
         Structs.Property new_cold = Properties.get_cold_temperature();
         Structs.Property other = Properties.get_other_temperature();
 
-        /*
-         * for (Structs.Polygon poly : aMesh.getPolygonsList()) {
-         * 
-         * System.out.println(poly.getPropertiesList());
-         * 
-         * }
-         */
-
         for (int i = 0; i < aMesh.getPolygonsCount(); i++) {
             Structs.Polygon.Builder p = Structs.Polygon.newBuilder(iMesh.getPolygons(i));
 
             if (p.getProperties(3).getValue().equals("LOW")) {
                 p.addProperties(warm);
-            } else if (p.getProperties(3).getValue().equals("MEDIUM")) {
+            }
+            else if (p.getProperties(3).getValue().equals("MEDIUM")){
                 p.addProperties(mid);
-            } else if (p.getProperties(3).getValue().equals("HIGH")) {
+            }
+            else if (p.getProperties(3).getValue().equals("HIGH")){
                 p.addProperties(new_cold);
             }
 
-            else {
+            else{
                 p.addProperties(other);
             }
-
+             
+            
             iMesh.setPolygons(i, p);
         }
+
 
         return iMesh.build();
     }
 
+    
 }

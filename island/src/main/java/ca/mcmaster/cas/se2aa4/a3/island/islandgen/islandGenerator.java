@@ -1,59 +1,52 @@
 package ca.mcmaster.cas.se2aa4.a3.island.islandgen;
 
 import java.io.IOException;
+import java.io.ObjectInputFilter.Config;
+
+import org.apache.commons.cli.AmbiguousOptionException;
+
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.shape.Circle;
 import ca.mcmaster.cas.se2aa4.a3.island.shape.Square;
 import ca.mcmaster.cas.se2aa4.a3.island.shape.TiltedOval;
 import ca.mcmaster.cas.se2aa4.a3.island.shape.Shape;
+import ca.mcmaster.cas.se2aa4.a3.island.Lagoon.Lagoon;
 import ca.mcmaster.cas.se2aa4.a3.island.aquifers.Aquifers;
 import ca.mcmaster.cas.se2aa4.a3.island.beaches.Beaches;
 import ca.mcmaster.cas.se2aa4.a3.island.biomes.Biomes;
 import ca.mcmaster.cas.se2aa4.a3.island.configuration.Configuration;
-import ca.mcmaster.cas.se2aa4.a3.island.elevation.Plains;
-import ca.mcmaster.cas.se2aa4.a3.island.elevation.RockMountain;
-import ca.mcmaster.cas.se2aa4.a3.island.elevation.Temp;
-import ca.mcmaster.cas.se2aa4.a3.island.elevation.Volcano;
-import ca.mcmaster.cas.se2aa4.a3.island.Lagoon.Lagoon;
+import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
 import ca.mcmaster.cas.se2aa4.a3.island.lakes.Lakes;
 import ca.mcmaster.cas.se2aa4.a3.island.lakes.Rivers;
 
 public class islandGenerator {
     private Structs.Mesh aMesh;
+    private Configuration config;
     public static String biomeArg;
 
-    public islandGenerator() throws IOException {
-        aMesh = new MeshFactory().read("img/irregular.mesh");
+    public islandGenerator(Configuration config) throws IOException {
+        this.aMesh = new MeshFactory().read(config.input());
+        this.config = config;
+
     }
 
-    public Structs.Mesh generate(Configuration config) throws IOException {
+    public Structs.Mesh generate() throws IOException {
+        // biomeCond = (config.biomes() == null) ? false : true;
         biomeArg = (config.biomes());
-        MeshDimension dim = new MeshDimension(aMesh); // finds mesh dimensions
-        Shape iMesh = null;
-
-        if (config.shape().equals("square"))
-            iMesh = new Square(dim.maxX, dim.maxY); // Creates square island and passes mesh dimension
-        else if (config.shape().equals("circle"))
-            iMesh = new Circle(dim.maxX, dim.maxY);
-        else if (config.shape().equals("oval"))
-            iMesh = new TiltedOval(dim.maxX, dim.maxY);
-
-        if (iMesh == null)
-            throw new IllegalArgumentException("Unknown shape: " + config.shape());
-
-        Structs.Mesh mesh = iMesh.build(aMesh); // Calls build function from Shape
+        Structs.Mesh mesh = registerShape();
         if (config.mode() != null && config.mode().equals("lagoon"))
             mesh = new Lagoon(mesh).build(); // adds lagoon to mesh
         mesh = new Aquifers(mesh).enrichAquifers(config.aquifer()); // adds aquifer
         mesh = new Lakes(mesh).generateLakes(Integer.parseInt(config.lakes()));
-        mesh = new Rivers(mesh).generateRivers(7);
-        mesh = new Volcano().build(mesh);
-        mesh = new RockMountain().build(mesh);
+        mesh = new Rivers(mesh).generateRivers(Integer.parseInt(config.rivers()));
+        mesh = registerElevation(mesh);
         mesh = new Beaches(mesh).enrichBeaches();
-        mesh = new Plains().addElevation(mesh); // index 3?
-        mesh = new Temp(mesh).enrichTemp(); // index 4
+        mesh = new Plains().addElevation(mesh); 
+        mesh = new Temp(mesh).enrichTemp(); //index 4
         mesh = new Biomes(mesh).enrichBiomes();
+        
+        
 
         // Seed generation
         SeedGen seedGen = new SeedGen();
@@ -64,5 +57,52 @@ public class islandGenerator {
         System.out.println("SEED: " + seed);
 
         return mesh; // returns the mesh
+    }
+
+    public Structs.Mesh registerElevation(Structs.Mesh mesh){
+        if(config.elevation() == null)
+            return mesh;
+        
+        switch(config.elevation()){
+            case "volcano":
+                mesh = new Volcano().build(mesh);
+                break;
+            case "rockymountain":
+                mesh = new RockMountain().build(mesh);
+                break;
+            case "both":
+                mesh = new Volcano().build(mesh);
+                mesh = new RockMountain().build(mesh);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Specified Elevation type does not exist -- " + config.elevation());
+        }
+
+        return mesh;
+    }
+
+    public Structs.Mesh registerShape(){
+        Shape iMesh;
+        MeshDimension dim = new MeshDimension(aMesh);
+
+        //default shape if none is provided
+        if(config.shape() == null)
+            return new Circle(dim.maxX, dim.maxY).build(aMesh);
+
+        switch(config.shape()){
+            case "square":
+                iMesh = new Square(dim.maxX, dim.maxY);
+                break;
+            case "circle":
+                iMesh = new Circle(dim.maxX, dim.maxY);
+                break;
+            case "oval":
+                iMesh = new TiltedOval(dim.maxX, dim.maxY);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown shape: " + config.shape());
+        }
+        return iMesh.build(aMesh);
     }
 }
