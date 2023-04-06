@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.DijkstrasAlgorithm;
+import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.DirectedGraph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Edge;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
 
 public class SamplePath {
     public void Paths() {
-        Graph graph = new Graph();
+        Graph graph = new DirectedGraph();
         Node nodeA = new Node(1, "NY", 100);
         Node nodeB = new Node(2, "Toronto", 500);
         Node nodeC = new Node(3, "Silicon Valley", 50);
@@ -30,8 +31,8 @@ public class SamplePath {
         graph.addEdge(new Edge(nodeD, nodeE, 5));
 
 
-        DijkstrasAlgorithm pathFinder = new DijkstrasAlgorithm(graph);
-        List<Edge> path = pathFinder.findPath(nodeC, nodeE);
+        DijkstrasAlgorithm pathFinder = new DijkstrasAlgorithm();
+        List<Edge> path = pathFinder.findPath(nodeC, nodeE, graph);
 
         if (path.isEmpty()) {
             System.out.println("No path found");

@@ -7,7 +7,7 @@ public class Node {
     private int id;
     private String name;
     private int elevation;
-    private List<Edge> outgoingEdges; // outgoing edges
+    private List<Edge> outgoingEdges;
 
     public Node(int id, String name, int elevation) {
         this.id = id;
@@ -26,6 +26,14 @@ public class Node {
 
     public int getElevation() {
         return elevation;
+    }
+
+    public void addOutgoingEdge(Edge edge) {
+        outgoingEdges.add(edge);
+    }
+
+    public void removeOutgoingEdge(Edge edge) {
+        outgoingEdges.remove(edge);
     }
 
     public List<Edge> getOutgoingEdges() {

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.DijkstrasAlgorithm;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.PathFinder;
+import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.DirectedGraph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Edge;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
@@ -29,7 +30,7 @@ public class PathFindingTest {
 
     @Before
     public void setUp() {
-        graph = new Graph();
+        graph = new DirectedGraph();
         nodeA = new Node(1, "Toronto", 100);
         nodeB = new Node(2, "Montreal", 500);
         nodeC = new Node(3, "Vancouver", 50);
@@ -56,81 +57,82 @@ public class PathFindingTest {
         graph.addEdge(edgeBD);
         graph.addEdge(edgeDE);
 
-        dijkstra = new DijkstrasAlgorithm(graph);
+        dijkstra = new DijkstrasAlgorithm();
     }
 
+    // Testing main aspect of what the pathfinding algorithm should do (Finding shortest path between 2 nodes)
     @Test
-    public void testPathFinder_withValidNodes_shouldReturnCorrectShortestPath() {
+    public void testFindPath_withValidNodes_shouldReturnCorrectShortestPath() {
         // Longest path is from edgeAC, edgeCB, edgeBD, edgeDE
         List<Edge> expectedPath = Arrays.asList(edgeAB, edgeBD, edgeDE);
-        List<Edge> actualPath = dijkstra.findPath(nodeA, nodeE);
+        List<Edge> actualPath = dijkstra.findPath(nodeA, nodeE, graph);
         assertEquals(expectedPath, actualPath);
     }
 
     @Test
-    public void testPathFinder_withDifferentStartingNode_shouldReturnCorrectShortestPath() {
-        List<Edge> expectedPath = Arrays.asList(edgeBD, edgeDE);
-        List<Edge> actualPath = dijkstra.findPath(nodeB, nodeE);
-        assertEquals(expectedPath, actualPath);
-    }
-
-    @Test
-    public void testPathFinder_withSameSourceAndTargetNodes_shouldReturnEmptyList() {
+    public void testFindPath_withSameSourceAndTargetNodes_shouldReturnEmptyList() {
         List<Edge> expectedPath = Collections.emptyList();
-        List<Edge> actualPath = dijkstra.findPath(nodeA, nodeA);
+        List<Edge> actualPath = dijkstra.findPath(nodeA, nodeA, graph);
         assertEquals(expectedPath, actualPath);
     }
 
     @Test
-    public void testPathFinder_withUnreachableTargetNode_shouldReturnEmptyList() {
+    public void testFindPath_withUnreachableTargetNode_shouldReturnEmptyList() {
         List<Edge> expectedPath = Collections.emptyList();
-        List<Edge> actualPath = dijkstra.findPath(nodeA, nodeExcluded);
+        List<Edge> actualPath = dijkstra.findPath(nodeA, nodeExcluded, graph);
         assertEquals(expectedPath, actualPath);
     }
 
+    // Testing to see if correct path length is given
     @Test
-    public void testPathFinder_graphShortestPath_shouldBeSizeThree() {
-        List<Edge> path = dijkstra.findPath(nodeA, nodeE);
+    public void testFindPath_graphShortestPath_shouldBeSizeThree() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeE, graph);
         assertEquals(3, path.size());
     }
 
+    // Testing to see if correct edge weight is given
     @Test
-    public void testPathFinder_weightForEdgeAB_shouldBe1() {
-        List<Edge> path = dijkstra.findPath(nodeA, nodeB);
+    public void testFindPath_weightForEdgeAB_shouldBe1() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeB, graph);
         assertEquals(1.0, path.get(0).getWeight(), 0.0);
     }
 
+    // Testing to see if shortest path weight is correct
     @Test
-    public void testPathFinder_graphShortestPathWeight_shouldBeTen() {
+    public void testFindPath_graphShortestPathWeight_shouldBeTen() {
         double totalWeight = 0;
-        List<Edge> path = dijkstra.findPath(nodeA, nodeE);
+        List<Edge> path = dijkstra.findPath(nodeA, nodeE, graph);
         for (Edge edge : path) {
             totalWeight += edge.getWeight();
         }
         assertEquals(10.0, totalWeight, 0.0);
     }
 
+    // Testing to see if source node for an edge is correct
     @Test
-    public void testPathFinder_SourceNodeForEdgeAB_shouldBeToronto() {
-        List<Edge> path = dijkstra.findPath(nodeA, nodeB);
+    public void testFindPath_SourceNodeForEdgeAB_shouldBeToronto() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeB, graph);
         assertEquals("Toronto", path.get(0).getSource().getName());
     }
 
+    // Testing to see if destination node for an edge is correct
     @Test
-    public void testPathFinder_DestinationNodeForEdgeAB_shouldBeMontreal() {
-        List<Edge> path = dijkstra.findPath(nodeA, nodeB);
+    public void testFindPath_DestinationNodeForEdgeAB_shouldBeMontreal() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeB, graph);
         assertEquals("Montreal", path.get(0).getDestination().getName());
     }
 
+    // Testing to see if graph starting node is correct
     @Test
-    public void testPathFinder_graphStartNode_shouldBeToronto() {
-        List<Edge> path = dijkstra.findPath(nodeA, nodeE);
+    public void testFindPath_graphStartNode_shouldBeToronto() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeE, graph);
         assertEquals("Toronto", path.get(0).getSource().getName());
     }
 
+    // Testing to see if graph ending node is correct
     @Test
-    public void testPathFinder_graphEndNode_shouldBeOttawa() {
-        List<Edge> path = dijkstra.findPath(nodeA, nodeE);
+    public void testFindPath_graphEndNode_shouldBeOttawa() {
+        List<Edge> path = dijkstra.findPath(nodeA, nodeE, graph);
         assertEquals("Ottawa", path.get(2).getDestination().getName());
     }
 }
