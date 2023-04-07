@@ -3,6 +3,10 @@ package ca.mcmaster.cas.se2aa4.a3.island.Properties;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class Properties {
+    public static String hamletsColors = "204, 0, 255";
+    public static String villagesColors = "140, 120, 60";
+    public static String citiesColors = "0, 0, 0";
+    public static String capitalColors = "17, 0, 255";
     public static String volcanoTier1Colors = "255,0,0";
     public static String volcanoTier2Colors = "32,32,32";
     public static String volcanoTier3Colors = "64,64,64";
@@ -29,6 +33,34 @@ public class Properties {
     public static String hottestTemp = "25";
     public static String normalTemp = "15";
     public static String coldTemp = "5";
+
+    public static Structs.Property getHamletsProps() {
+        return Structs.Property.newBuilder()
+                .setKey("rgb_color")
+                .setValue(hamletsColors)
+                .build();
+    }
+
+    public static Structs.Property getVillagesProps() {
+        return Structs.Property.newBuilder()
+                .setKey("rgb_color")
+                .setValue(villagesColors)
+                .build();
+    }
+
+    public static Structs.Property getCitiesProps() {
+        return Structs.Property.newBuilder()
+                .setKey("rgb_color")
+                .setValue(citiesColors)
+                .build();
+    }
+
+    public static Structs.Property getCapitalProps() {
+        return Structs.Property.newBuilder()
+                .setKey("rgb_color")
+                .setValue(capitalColors)
+                .build();
+    }
 
     public static Structs.Property getLandHighProps() {
         return Structs.Property.newBuilder()
@@ -204,6 +236,7 @@ public class Properties {
                 .setValue("5")
                 .build();
     }
+
     public static Structs.Property get_other_temperature() {
         return Structs.Property.newBuilder()
                 .setKey("temperature")
@@ -224,6 +257,5 @@ public class Properties {
                 .setValue(plainsColors)
                 .build();
     }
-
 
 }

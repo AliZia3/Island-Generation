@@ -15,7 +15,7 @@ import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
 // Got most of the bare bones ideas from here
 // https://github.com/rabestro/graph-pathfinding-algorithms/blob/master/algorithm/src/main/java/lv/id/jc/algorithm/graph/DijkstrasAlgorithm.java
 
-public class DijkstrasAlgorithm implements PathFinder {
+public class DijkstrasAlgorithm implements PathFinder<Edge> {
     @Override
     public List<Edge> findPath(Node source, Node destination, Graph graph) {
         Deque<Node> queue = new ArrayDeque<>();

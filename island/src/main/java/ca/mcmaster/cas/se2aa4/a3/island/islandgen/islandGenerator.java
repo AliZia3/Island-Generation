@@ -1,10 +1,6 @@
 package ca.mcmaster.cas.se2aa4.a3.island.islandgen;
 
 import java.io.IOException;
-import java.io.ObjectInputFilter.Config;
-
-import org.apache.commons.cli.AmbiguousOptionException;
-
 import ca.mcmaster.cas.se2aa4.a2.io.MeshFactory;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.shape.Circle;
@@ -45,6 +41,7 @@ public class islandGenerator {
         mesh = new Plains().addElevation(mesh); 
         mesh = new Temp(mesh).enrichTemp(); //index 4
         mesh = new Biomes(mesh).enrichBiomes();
+        // mesh = new City(mesh).enrichCities(Integer.parseInt(config.cities()));
         
         
 

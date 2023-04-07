@@ -31,8 +31,9 @@ public class SamplePath {
         graph.addEdge(new Edge(nodeD, nodeE, 5));
 
 
-        DijkstrasAlgorithm pathFinder = new DijkstrasAlgorithm();
-        List<Edge> path = pathFinder.findPath(nodeC, nodeE, graph);
+        // DijkstrasAlgorithm pathFinder = new DijkstrasAlgorithm();
+        PathFinder<Edge> algorithm = new DijkstrasAlgorithm();
+        List<Edge> path = algorithm.findPath(nodeC, nodeE, graph);
 
         if (path.isEmpty()) {
             System.out.println("No path found");

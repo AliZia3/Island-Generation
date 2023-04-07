@@ -26,7 +26,7 @@ public class PathFindingTest {
     private Edge edgeCB;
     private Edge edgeBD;
     private Edge edgeDE;
-    private PathFinder dijkstra;
+    private PathFinder<Edge> dijkstra;
 
     @Before
     public void setUp() {
