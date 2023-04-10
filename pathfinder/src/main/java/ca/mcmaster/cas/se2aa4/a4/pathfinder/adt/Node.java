@@ -43,7 +43,7 @@ public class Node {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Node ").append(name).append(": [");
+        sb.append("Node ").append(name).append(id).append(": [");
         for (Edge edge : outgoingEdges) {
             sb.append(edge.toString()).append(", ");
         }

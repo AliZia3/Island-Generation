@@ -38,7 +38,6 @@ public class GraphicRenderer implements Renderer {
     private void drawAPolygon(Structs.Polygon p, Mesh aMesh, Graphics2D canvas) {
         Hull hull = new Hull();
         for (Integer segmentIdx : p.getSegmentIdxsList()) {
-//==============================================================
             Structs.Segment s = aMesh.getSegments(segmentIdx);
             Optional<Color> fill = new ColorProperty().extract(s.getPropertiesList());
             if (fill.isPresent()) {
@@ -51,7 +50,6 @@ public class GraphicRenderer implements Renderer {
             }
             Stroke stroke = new BasicStroke(0.2f);
             canvas.setStroke(stroke);
-//==============================================================
             hull.add(aMesh.getSegments(segmentIdx), aMesh);
         }
         Path2D path = new Path2D.Float();

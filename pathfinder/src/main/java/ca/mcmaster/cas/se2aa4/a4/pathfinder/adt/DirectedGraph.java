@@ -1,27 +1,25 @@
 package ca.mcmaster.cas.se2aa4.a4.pathfinder.adt;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DirectedGraph implements Graph {
-    private Map<Integer, Node> nodes;
+    private List<Node> nodes;
     private List<Edge> edges;
 
     public DirectedGraph() {
-        this.nodes = new HashMap<>();
+        this.nodes = new ArrayList<>();
         this.edges = new ArrayList<>();
     }
 
     @Override
     public void addNode(Node node) {
-        nodes.put(node.getId(), node);
+        nodes.add(node);
     }
 
     @Override
     public void removeNode(Node node) {
-        nodes.remove(node.getId());
+        nodes.remove(node);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class DirectedGraph implements Graph {
     }
 
     @Override
-    public Map<Integer, Node> getNodes() {
+    public List<Node> getNodes() {
         return nodes;
     }
 
@@ -57,7 +55,7 @@ public class DirectedGraph implements Graph {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Nodes:\n");
-        for (Node node : nodes.values()) {
+        for (Node node : nodes) {
             sb.append(node.toString()).append("\n");
         }
         sb.append("Edges:\n");

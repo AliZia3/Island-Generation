@@ -35,19 +35,6 @@ public class Cities {
         iMesh.addAllSegments(aMesh.getSegmentsList());
         iMesh.addAllPolygons(aMesh.getPolygonsList());
 
-        // int randomPolyIdx = random.nextInt(aMesh.getPolygonsCount());
-        // while (numCities > 0) {
-        //     if (aMesh.getPolygons(randomPolyIdx).getProperties(0).getValue() == Properties.landColors || aMesh.getPolygons(randomPolyIdx).getProperties(0).getValue() == Properties.landLowColors || aMesh.getPolygons(randomPolyIdx).getProperties(0).getValue() == Properties.landMediumColors) {
-        //         Structs.Polygon randomPoly = aMesh.getPolygons(randomPolyIdx); // Get polygon at the random index
-        //         int centroid = randomPoly.getCentroidIdx(); // get centroid index of polygon
-        //         Structs.Vertex.Builder c = Structs.Vertex.newBuilder(aMesh.getVertices(centroid));
-        //         c.addProperties(Properties.getCapitalColorProps()).addProperties(Properties.getCapitalSizeProps());
-        //         numCities--;
-        //         // set the centroid vertex with the properties of c
-        //         iMesh.setVertices(centroid, c);
-        //     }
-        //     randomPolyIdx = random.nextInt(aMesh.getPolygonsCount());
-        // }
 
         int counter = 0;
         for (int i = 0; i < aMesh.getPolygonsCount(); i++) {
@@ -69,6 +56,7 @@ public class Cities {
                 }
                 else {
                     if (randomNodeType == 0) {
+                        //can also make it counter instead of i if want more organized (i gives polygon index)
                         nodeType = new Node(i, "City", elevation);
                         c.addProperties(Properties.getCityColorProps()).addProperties(Properties.getCitySizeProps());
                     } 

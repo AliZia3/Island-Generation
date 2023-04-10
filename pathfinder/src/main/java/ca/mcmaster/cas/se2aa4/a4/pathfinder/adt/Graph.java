@@ -8,7 +8,7 @@ public interface Graph {
     void removeNode(Node node);
     void addEdge(Edge edge);
     void removeEdge(Edge edge);
-    Map<Integer, Node> getNodes();
+    List<Node> getNodes();
     List<Edge> getEdges();
     List<Edge> getEdgesForNode(Node node);
 }

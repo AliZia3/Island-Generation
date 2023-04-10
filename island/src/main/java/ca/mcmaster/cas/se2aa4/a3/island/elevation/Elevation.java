@@ -40,7 +40,6 @@ public abstract class Elevation {
                 p.addProperties(Structs.Property.newBuilder().setKey("elevation").setValue("NONE").build());
 
             iMesh.addPolygons(p);
-
         }
 
         return iMesh.build();
