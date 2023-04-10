@@ -102,7 +102,7 @@ public class Properties {
     public static Structs.Property getRoadSizeProps() {
         return Structs.Property.newBuilder()
                 .setKey("thickness")
-                .setValue("5")
+                .setValue("1")
                 .build();
     }
 

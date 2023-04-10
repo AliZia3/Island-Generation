@@ -39,7 +39,7 @@ public class Cities {
             Structs.Polygon poly = aMesh.getPolygons(i); // Get polygon
             Node nodeType = new Node(0, null, 0);
             int elevation = random.nextInt(1, 100 + 1);
-            
+
             if (numCities > 0 && isLandPolygon(poly)) {
                 int randomNodeType = random.nextInt(0, 2 + 1); // Random Node type
 
@@ -79,13 +79,30 @@ public class Cities {
                 c.addProperties(Properties.getRoadColorProps()).addProperties(Properties.getRoadSizeProps());
                 iMesh.setVertices(centroid, c);
             }
-            graph.addNode(nodeType);
+            if(nodeType.getId() != 0)
+                graph.addNode(nodeType);
+            // graph.addEdge(new Edge(graph.getNodes().get(i), graph.getNodes().get(i+1), random.nextInt(1, 5+1)));
         }
+
+        List<Node> nodes = graph.getNodes();
+        for (int i = 0; i < nodes.size() - 1; i++) {
+            Node node1 = nodes.get(i);
+            Node node2 = nodes.get(i+1);
+            graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
+        }
+
+
+        // for(Structs.Polygon p: aMesh.getPolygonsList()) {
+        //     Structs.Vertex centroid = aMesh.getVertices(p.getCentroidIdx());
+        //     for(Integer neigbourIdx: p.getNeighborIdxsList()){
+        //         Structs.Polygon neighbour = aMesh.getPolygons(neigbourIdx);
+        //         Structs.Vertex neighbourCentroid = aMesh.getVertices(neighbour.getCentroidIdx());
+        //     }
+        // }
 
         System.out.println(graph.toString());
         System.out.println("==================================================================");
         // StarNetwork(graph.getNodes());
-
         
         return iMesh.build();
     }
