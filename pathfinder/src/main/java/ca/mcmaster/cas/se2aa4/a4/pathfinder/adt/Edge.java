@@ -23,4 +23,9 @@ public class Edge {
         return weight;
     }
 
+    @Override
+    public String toString() {
+        return "Edge from Node " + source.getId() + " to Node " + destination.getId() + " with weight " + weight;
+    }
+
 }

@@ -11,11 +11,14 @@ import java.awt.Stroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
 
 public class GraphicRenderer implements Renderer {
 
@@ -27,6 +30,7 @@ public class GraphicRenderer implements Renderer {
         canvas.setStroke(stroke);
         drawPolygons(aMesh, canvas);
         drawCentroids(aMesh, canvas); // Superimpose centroids
+        // drawNeighbourhood(aMesh, canvas); // Superimpose neigbourhood relation
     }
 
     private void drawPolygons(Mesh aMesh, Graphics2D canvas) {
@@ -98,6 +102,31 @@ public class GraphicRenderer implements Renderer {
         int thickness = Integer.parseInt(val);
         return thickness;
     }
+
+    // private void drawNeighbourhood(Structs.Mesh aMesh, Graphics2D canvas) {
+    //     canvas.setColor(Color.BLACK);
+    //     Set<Set<Structs.Polygon>> drawn = new HashSet<>();
+    //     for(Structs.Polygon p: aMesh.getPolygonsList()){
+    //         Structs.Vertex centroid = aMesh.getVertices(p.getCentroidIdx());
+    //         for(Integer neigbourIdx: p.getNeighborIdxsList()){
+    //             Structs.Polygon neighbour = aMesh.getPolygons(neigbourIdx);
+    //             Structs.Vertex neighbourCentroid = aMesh.getVertices(neighbour.getCentroidIdx());
+                
+    //             if(!drawn.contains(Set.of(p, neighbour))){
+    //                 drawLink(centroid, neighbourCentroid, canvas);
+    //                 drawn.add(Set.of(p, neighbour));
+    //             }
+    //         }
+    //     }
+    // }
+
+    // private void drawLink(Structs.Vertex centroid, Structs.Vertex neighbourCentroid, Graphics2D canvas) {
+    //     Stroke stroke = new BasicStroke(5);
+    //     canvas.setStroke(stroke);
+    //     Line2D line = new Line2D.Float((float) centroid.getX(), (float) centroid.getY(),
+    //                                     (float) neighbourCentroid.getX(),(float) neighbourCentroid.getY());
+    //     canvas.draw(line);
+    // }
 
     
 
