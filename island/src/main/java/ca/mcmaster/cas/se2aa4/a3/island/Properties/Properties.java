@@ -3,10 +3,12 @@ package ca.mcmaster.cas.se2aa4.a3.island.Properties;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 
 public class Properties {
-    public static String hamletsColors = "204, 0, 255";
-    public static String villagesColors = "140, 120, 60";
-    public static String citiesColors = "0, 0, 0";
-    public static String capitalColors = "17, 0, 255";
+    public static String hamletsColors = "204,0,255";
+    public static String villagesColors = "140,120,60";
+    public static String cityColors = "255,25,0";
+    public static String capitalColors = "17,0,255";
+    public static String roadColors = "48,48,46";
+
     public static String volcanoTier1Colors = "255,0,0";
     public static String volcanoTier2Colors = "32,32,32";
     public static String volcanoTier3Colors = "64,64,64";
@@ -34,33 +36,84 @@ public class Properties {
     public static String normalTemp = "15";
     public static String coldTemp = "5";
 
-    public static Structs.Property getHamletsProps() {
+    public static Structs.Property getHamletsColorProps() {
         return Structs.Property.newBuilder()
                 .setKey("rgb_color")
                 .setValue(hamletsColors)
                 .build();
     }
 
-    public static Structs.Property getVillagesProps() {
+    public static Structs.Property getHamletsSizeProps() {
+        return Structs.Property.newBuilder()
+                .setKey("thickness")
+                .setValue("10")
+                .build();
+    }
+
+    public static Structs.Property getVillagesColorProps() {
         return Structs.Property.newBuilder()
                 .setKey("rgb_color")
                 .setValue(villagesColors)
                 .build();
     }
 
-    public static Structs.Property getCitiesProps() {
+    public static Structs.Property getVillagesSizeProps() {
         return Structs.Property.newBuilder()
-                .setKey("rgb_color")
-                .setValue(citiesColors)
+                .setKey("thickness")
+                .setValue("15")
                 .build();
     }
 
-    public static Structs.Property getCapitalProps() {
+    public static Structs.Property getCityColorProps() {
+        return Structs.Property.newBuilder()
+                .setKey("rgb_color")
+                .setValue(cityColors)
+                .build();
+    }
+
+    public static Structs.Property getCitySizeProps() {
+        return Structs.Property.newBuilder()
+                .setKey("thickness")
+                .setValue("20")
+                .build();
+    }
+
+    public static Structs.Property getCapitalColorProps() {
         return Structs.Property.newBuilder()
                 .setKey("rgb_color")
                 .setValue(capitalColors)
                 .build();
     }
+
+    public static Structs.Property getCapitalSizeProps() {
+        return Structs.Property.newBuilder()
+                .setKey("thickness")
+                .setValue("25")
+                .build();
+    }
+
+    public static Structs.Property getRoadColorProps() {
+        return Structs.Property.newBuilder()
+                .setKey("rgb_color")
+                .setValue(roadColors)
+                .build();
+    }
+
+    public static Structs.Property getRoadSizeProps() {
+        return Structs.Property.newBuilder()
+                .setKey("thickness")
+                .setValue("5")
+                .build();
+    }
+
+    
+
+    // public static Structs.Property getRoadProps() {
+    //     Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("0,0,0,").build();
+    //     Structs.Property vertexThickness = Property.newBuilder().setKey("thickness").setValue(1).build();
+    //     Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertexThickness).build();
+    //     verticesWithProps.add(withProperties);
+    // }
 
     public static Structs.Property getLandHighProps() {
         return Structs.Property.newBuilder()

@@ -11,6 +11,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.Lagoon.Lagoon;
 import ca.mcmaster.cas.se2aa4.a3.island.aquifers.Aquifers;
 import ca.mcmaster.cas.se2aa4.a3.island.beaches.Beaches;
 import ca.mcmaster.cas.se2aa4.a3.island.biomes.Biomes;
+import ca.mcmaster.cas.se2aa4.a3.island.cities.Cities;
 import ca.mcmaster.cas.se2aa4.a3.island.configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
 import ca.mcmaster.cas.se2aa4.a3.island.lakes.Lakes;
@@ -24,7 +25,6 @@ public class islandGenerator {
     public islandGenerator(Configuration config) throws IOException {
         this.aMesh = new MeshFactory().read(config.input());
         this.config = config;
-
     }
 
     public Structs.Mesh generate() throws IOException {
@@ -38,12 +38,10 @@ public class islandGenerator {
         mesh = new Rivers(mesh).generateRivers(Integer.parseInt(config.rivers()));
         mesh = registerElevation(mesh);
         mesh = new Beaches(mesh).enrichBeaches();
-        mesh = new Plains().addElevation(mesh); 
-        mesh = new Temp(mesh).enrichTemp(); //index 4
+        mesh = new Plains().addElevation(mesh);
+        mesh = new Temp(mesh).enrichTemp(); // index 4
         mesh = new Biomes(mesh).enrichBiomes();
-        // mesh = new City(mesh).enrichCities(Integer.parseInt(config.cities()));
-        
-        
+        mesh = new Cities(mesh).generateCities(Integer.parseInt(config.cities()));
 
         // Seed generation
         SeedGen seedGen = new SeedGen();
@@ -56,11 +54,11 @@ public class islandGenerator {
         return mesh; // returns the mesh
     }
 
-    public Structs.Mesh registerElevation(Structs.Mesh mesh){
-        if(config.elevation() == null)
+    public Structs.Mesh registerElevation(Structs.Mesh mesh) {
+        if (config.elevation() == null)
             return mesh;
-        
-        switch(config.elevation()){
+
+        switch (config.elevation()) {
             case "volcano":
                 mesh = new Volcano().build(mesh);
                 break;
@@ -79,15 +77,15 @@ public class islandGenerator {
         return mesh;
     }
 
-    public Structs.Mesh registerShape(){
+    public Structs.Mesh registerShape() {
         Shape iMesh;
         MeshDimension dim = new MeshDimension(aMesh);
 
-        //default shape if none is provided
-        if(config.shape() == null)
+        // default shape if none is provided
+        if (config.shape() == null)
             return new Circle(dim.maxX, dim.maxY).build(aMesh);
 
-        switch(config.shape()){
+        switch (config.shape()) {
             case "square":
                 iMesh = new Square(dim.maxX, dim.maxY);
                 break;

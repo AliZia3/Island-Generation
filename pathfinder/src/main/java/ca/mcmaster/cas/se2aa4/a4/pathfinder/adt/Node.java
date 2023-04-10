@@ -39,4 +39,18 @@ public class Node {
     public List<Edge> getOutgoingEdges() {
         return outgoingEdges;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Node ").append(name).append(": [");
+        for (Edge edge : outgoingEdges) {
+            sb.append(edge.toString()).append(", ");
+        }
+        if (outgoingEdges.size() > 0) {
+            sb.delete(sb.length() - 2, sb.length()); // remove last comma and space
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }

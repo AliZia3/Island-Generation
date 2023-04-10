@@ -32,7 +32,7 @@ public class Lakes {
         while (numLakes > 0) {
             if (aMesh.getPolygons(randomPolyIdx).getProperties(0).getValue() == Properties.landColors) {
                 Structs.Polygon randomPoly = aMesh.getPolygons(randomPolyIdx); // Get polygon at the random index
-                Structs.Polygon.Builder p = Structs.Polygon.newBuilder(randomPoly);
+                Structs.Polygon.Builder p = Structs.Polygon.newBuilder(randomPoly); // build poly at the random index
                 p.setProperties(0, lakes);
                 // p.addProperties(Properties.getLakeHumidityProps());
                 numLakes--;

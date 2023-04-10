@@ -52,4 +52,18 @@ public class DirectedGraph implements Graph {
     public List<Edge> getEdgesForNode(Node node) {
         return node.getOutgoingEdges();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Nodes:\n");
+        for (Node node : nodes.values()) {
+            sb.append(node.toString()).append("\n");
+        }
+        sb.append("Edges:\n");
+        for (Edge edge : edges) {
+            sb.append(edge.toString()).append("\n");
+        }
+        return sb.toString();
+    }
 }
