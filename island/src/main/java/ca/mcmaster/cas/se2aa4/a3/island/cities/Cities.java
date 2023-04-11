@@ -15,15 +15,15 @@ import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 public class Cities {
     private Structs.Mesh aMesh;
     private Random random;
-    private Graph graph;
-    private PathFinder<Edge> dijkstra;
+    // private Graph graph;
+    // private PathFinder<Edge> dijkstra;
 
 
     public Cities(Structs.Mesh iMesh) {
         this.aMesh = iMesh;
         random = new Random();
-        this.graph = new DirectedGraph();
-        dijkstra = new DijkstrasAlgorithm();
+        // this.graph = new DirectedGraph();
+        // dijkstra = new DijkstrasAlgorithm();
     }
 
     public Structs.Mesh generateCities(int numCities) {
@@ -32,27 +32,26 @@ public class Cities {
             .addAllSegments(aMesh.getSegmentsList())
             .addAllPolygons(aMesh.getPolygonsList());
 
+        Graph graph = new DirectedGraph();
+
 
         // Adds nodes onto graph
-        int counter = 0;
+        boolean firstIteration = true;
         for (int i = 0; i < aMesh.getPolygonsCount(); i++) {
-            Structs.Polygon poly = aMesh.getPolygons(i); // Get polygon
             Node nodeType = new Node(0, null, 0);
             int elevation = random.nextInt(1, 100 + 1);
+            int randomNodeType = random.nextInt(0, 2 + 1); // Random Node type
+            Structs.Polygon poly = aMesh.getPolygons(i); // Get polygon
+            int centroid = poly.getCentroidIdx(); // get centroid index of polygon
+            Structs.Vertex.Builder c = Structs.Vertex.newBuilder(aMesh.getVertices(centroid)); //create vertex at that centroid location
 
             if (numCities > 0 && isLandPolygon(poly)) {
-                int randomNodeType = random.nextInt(0, 2 + 1); // Random Node type
-
-                // Structs.Polygon poly = aMesh.getPolygons(i); // Get polygon
-                int centroid = poly.getCentroidIdx(); // get centroid index of polygon
-                Structs.Vertex.Builder c = Structs.Vertex.newBuilder(aMesh.getVertices(centroid)); //create vertex at that centroid location
-
                 // If first ieration create a capital node
-                if (counter == 0) {
+                if (firstIteration) {
                     // Make centroid index id??
                     nodeType = new Node(i, "Capital", elevation);
                     c.addProperties(Properties.getCapitalColorProps()).addProperties(Properties.getCapitalSizeProps());
-                    counter++;
+                    firstIteration = false;
                 }
                 else {
                     if (randomNodeType == 0) {
@@ -69,66 +68,120 @@ public class Cities {
                         c.addProperties(Properties.getHamletsColorProps()).addProperties(Properties.getHamletsSizeProps());
                     } 
                 }
-                iMesh.setVertices(centroid, c);
                 numCities--;
             }
             else if (isLandPolygon(poly)) {
-                int centroid = poly.getCentroidIdx();
-                Structs.Vertex.Builder c = Structs.Vertex.newBuilder(aMesh.getVertices(centroid));
                 nodeType = new Node(i, "Road", elevation);
                 c.addProperties(Properties.getRoadColorProps()).addProperties(Properties.getRoadSizeProps());
-                iMesh.setVertices(centroid, c);
             }
-            if(nodeType.getId() != 0)
+            iMesh.setVertices(centroid, c);
+            
+            if(nodeType.getName() != null)
                 graph.addNode(nodeType);
             // graph.addEdge(new Edge(graph.getNodes().get(i), graph.getNodes().get(i+1), random.nextInt(1, 5+1)));
         }
 
         List<Node> nodes = graph.getNodes();
-        for (int i = 0; i < nodes.size() - 1; i++) {
-            Node node1 = nodes.get(i);
-            Node node2 = nodes.get(i+1);
-            graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
-        }
-
-
-        // for(Structs.Polygon p: aMesh.getPolygonsList()) {
-        //     Structs.Vertex centroid = aMesh.getVertices(p.getCentroidIdx());
-        //     for(Integer neigbourIdx: p.getNeighborIdxsList()){
-        //         Structs.Polygon neighbour = aMesh.getPolygons(neigbourIdx);
-        //         Structs.Vertex neighbourCentroid = aMesh.getVertices(neighbour.getCentroidIdx());
-        //     }
+        // for (int i = 0; i < nodes.size() - 1; i++) {
+        //     Node node1 = nodes.get(i);
+        //     Node node2 = nodes.get(i+1);
+        //     graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
         // }
 
+        System.out.println("==============AFTER ADDDING NODES=============================");
         System.out.println(graph.toString());
+        System.out.println(graph.getNodes().get(0).getName());
+        System.out.println("========================================================");
+        
+
+        // iterate through all centroids that are on the land (cities, roads)
+        for(int i = 0; i < nodes.size(); i++) {
+            Structs.Polygon poly = aMesh.getPolygons(nodes.get(i).getId()); // get polygon at index i
+
+            // int polyCentroid = poly.getCentroidIdx();
+            Node node1 = nodes.get(i); 
+            System.out.println("OUTER LOOP POLYGON AT INDEX "+ i +" has ID: " + nodes.get(i).getId() + " And Name: " + nodes.get(i).getName());
+            Node node2 = null;
+            for (int j=0; j < poly.getNeighborIdxsCount(); j++){
+                Structs.Polygon neighborPoly = aMesh.getPolygons(poly.getNeighborIdxs(j));
+                if(isLandPolygon(neighborPoly)){
+                    // int neighborCentroid = neighborPoly.getCentroidIdx();
+                    System.out.println("======================INNER LOOP=====================");
+                    node2 = nodes.get(j); //poly.getNeighborIdxs(j) instead of j?
+                    System.out.println("INNER LOOP POLYGON AT INDEX "+ j +" has ID: " + nodes.get(j).getId() + " And Name: " + nodes.get(j).getName());
+                }
+                if (node2 != null){
+                    System.out.println("Node Names for Edges: " + node1.getName());
+                    System.out.println("Node Names for Edges: " + node2.getName());
+                    graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
+                }
+            }
+        }
+
+        System.out.println("==============AFTER ADDING EDGES=============================");
+        System.out.println(graph.toString());
+        System.out.println("========================================================");
+
+        
+        System.out.println("===============================PATHFINDING===========================");
+        PathFinder<Edge> algorithm = new DijkstrasAlgorithm();
+        List<Edge> path = algorithm.findPath(graph.getNodes().get(0), graph.getNodes().get(1), graph);
+        
+
+        if (path.isEmpty()) {
+            System.out.println("No path found");
+        } else {
+            double totalWeight = 0;
+            System.out.println("Path found:");
+
+            for (Edge edge : path) {
+                int destinationID = edge.getDestination().getId();
+                int sourceID = edge.getSource().getId();
+                String sourceName = edge.getSource().getName();
+                String destinationName = edge.getDestination().getName();
+                double weight = edge.getWeight();
+
+                System.out.println("(ID:" + sourceID + ") " + sourceName + " -> " + "(ID:" + destinationID + ") " + destinationName + " (" + weight + ")");
+                totalWeight += edge.getWeight();
+
+            }
+            System.out.println("Shortest Path Total Weight: " + totalWeight);
+        }
+        
+
+        // for (int i=0; i<numCities; i++) {
+        //     Node capital = nodes.get(0);
+        //     Node city = nodes.get(i);
+            
+        //     algorithm = new DijkstrasAlgorithm();
+        //     path = algorithm.findPath(graph.getNodes().get(0), graph.getNodes().get(i), graph);
+        // }
+        
         System.out.println("==================================================================");
         // StarNetwork(graph.getNodes());
+
+        
         
         return iMesh.build();
     }
 
 
-    public void StarNetwork(List<Node> nodes){
-        Structs.Mesh.Builder iMesh = Structs.Mesh.newBuilder();
-        iMesh.addAllVertices(aMesh.getVerticesList());
-        iMesh.addAllSegments(aMesh.getSegmentsList());
-        iMesh.addAllPolygons(aMesh.getPolygonsList());
+    // public void StarNetwork(List<Node> nodes){
+    //     // Connect capital to every other city
+    //     Node capital = nodes.get(0);
+    //     // System.out.println(capital.getName());
 
-        // Connect capital to every other city
-        Node capital = nodes.get(0);
-        // System.out.println(capital.getName());
-
-        for (int i = 1; i < nodes.size(); i++) {
-            Node city = nodes.get(i);
-            Structs.Vertex capitalCentroid = aMesh.getVertices(aMesh.getPolygons(nodes.get(0).getId()).getCentroidIdx());
-            Structs.Vertex cityCentroid = aMesh.getVertices(aMesh.getPolygons(nodes.get(i).getId()).getCentroidIdx());
+    //     for (int i = 1; i < nodes.size(); i++) {
+    //         Node city = nodes.get(i);
+    //         Structs.Vertex capitalCentroid = aMesh.getVertices(aMesh.getPolygons(nodes.get(0).getId()).getCentroidIdx());
+    //         Structs.Vertex cityCentroid = aMesh.getVertices(aMesh.getPolygons(nodes.get(i).getId()).getCentroidIdx());
             
-            graph.addEdge(new Edge(capital, city, random.nextInt(1, 5+1)));
-            // List<Edge> path = dijkstra.findPath(capital, city, graph);
-        }
+    //         graph.addEdge(new Edge(capital, city, random.nextInt(1, 5+1)));
+    //         // List<Edge> path = dijkstra.findPath(capital, city, graph);
+    //     }
 
-        // return iMesh.build();
-    }
+    //     // return iMesh.build();
+    // }
 
     private boolean isLandPolygon(Structs.Polygon poly) {
         return poly.getProperties(0).getValue() == Properties.landColors ||
