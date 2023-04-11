@@ -102,32 +102,4 @@ public class GraphicRenderer implements Renderer {
         int thickness = Integer.parseInt(val);
         return thickness;
     }
-
-    // private void drawNeighbourhood(Structs.Mesh aMesh, Graphics2D canvas) {
-    //     canvas.setColor(Color.BLACK);
-    //     Set<Set<Structs.Polygon>> drawn = new HashSet<>();
-    //     for(Structs.Polygon p: aMesh.getPolygonsList()){
-    //         Structs.Vertex centroid = aMesh.getVertices(p.getCentroidIdx());
-    //         for(Integer neigbourIdx: p.getNeighborIdxsList()){
-    //             Structs.Polygon neighbour = aMesh.getPolygons(neigbourIdx);
-    //             Structs.Vertex neighbourCentroid = aMesh.getVertices(neighbour.getCentroidIdx());
-                
-    //             if(!drawn.contains(Set.of(p, neighbour))){
-    //                 drawLink(centroid, neighbourCentroid, canvas);
-    //                 drawn.add(Set.of(p, neighbour));
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private void drawLink(Structs.Vertex centroid, Structs.Vertex neighbourCentroid, Graphics2D canvas) {
-    //     Stroke stroke = new BasicStroke(5);
-    //     canvas.setStroke(stroke);
-    //     Line2D line = new Line2D.Float((float) centroid.getX(), (float) centroid.getY(),
-    //                                     (float) neighbourCentroid.getX(),(float) neighbourCentroid.getY());
-    //     canvas.draw(line);
-    // }
-
-    
-
 }
