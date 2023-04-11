@@ -1,7 +1,9 @@
 package ca.mcmaster.cas.se2aa4.a3.island.cities;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.Properties.Properties;
@@ -33,6 +35,7 @@ public class Cities {
             .addAllPolygons(aMesh.getPolygonsList());
 
         Graph graph = new DirectedGraph();
+        Graph neighborGraph = new DirectedGraph();
 
 
         // Adds nodes onto graph
@@ -49,83 +52,138 @@ public class Cities {
                 // If first ieration create a capital node
                 if (firstIteration) {
                     // Make centroid index id??
-                    nodeType = new Node(i, "Capital", elevation);
+                    nodeType = new Node(centroid, "Capital", elevation);
                     c.addProperties(Properties.getCapitalColorProps()).addProperties(Properties.getCapitalSizeProps());
                     firstIteration = false;
                 }
                 else {
                     if (randomNodeType == 0) {
                         //can also make it counter instead of i if want more organized (i gives polygon index)
-                        nodeType = new Node(i, "City", elevation);
+                        nodeType = new Node(centroid, "City", elevation);
                         c.addProperties(Properties.getCityColorProps()).addProperties(Properties.getCitySizeProps());
                     } 
                     else if (randomNodeType == 1) {
-                        nodeType = new Node(i, "Village", elevation);
+                        nodeType = new Node(centroid, "Village", elevation);
                         c.addProperties(Properties.getVillagesColorProps()).addProperties(Properties.getVillagesSizeProps());
                     } 
                     else if (randomNodeType == 2) {
-                        nodeType = new Node(i, "Hamlet", elevation);
+                        nodeType = new Node(centroid, "Hamlet", elevation);
                         c.addProperties(Properties.getHamletsColorProps()).addProperties(Properties.getHamletsSizeProps());
                     } 
                 }
                 numCities--;
             }
             else if (isLandPolygon(poly)) {
-                nodeType = new Node(i, "Road", elevation);
+                nodeType = new Node(centroid, "Road", elevation);
                 c.addProperties(Properties.getRoadColorProps()).addProperties(Properties.getRoadSizeProps());
             }
             iMesh.setVertices(centroid, c);
             
             if(nodeType.getName() != null)
                 graph.addNode(nodeType);
-            // graph.addEdge(new Edge(graph.getNodes().get(i), graph.getNodes().get(i+1), random.nextInt(1, 5+1)));
         }
 
+
         List<Node> nodes = graph.getNodes();
-        // for (int i = 0; i < nodes.size() - 1; i++) {
-        //     Node node1 = nodes.get(i);
-        //     Node node2 = nodes.get(i+1);
-        //     graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
+        // Set<Set<Structs.Polygon>> drawn = new HashSet<>();
+        // Node node1 = null;
+        // Node node2 = null;
+        // for(Structs.Polygon p: aMesh.getPolygonsList()){
+        //     if(isLandPolygon(p)){
+        //         int centroidIdx = p.getCentroidIdx();
+                
+        //         // Structs.Vertex centroid = aMesh.getVertices(centroidIdx);
+                
+        //         // int currentCentroidId = nodes.get(centroidIdx).getId();
+        //         // String currentCentroidName = nodes.get(centroidIdx).getName();
+        //         int elevation = random.nextInt(1, 100+1);
+                
+        //         node1 = new Node(centroidIdx, "Node1", elevation);
+        //         neighborGraph.addNode(node1);
+                
+        //         for(Integer neigbourIdx: p.getNeighborIdxsList()){
+        //             Structs.Polygon neighbour = aMesh.getPolygons(neigbourIdx);
+        //             if(isLandPolygon(neighbour) && !drawn.contains(Set.of(p, neighbour))){
+        //                 int neighborCentroidIdx = neighbour.getCentroidIdx();
+        //                 // Structs.Vertex neighbourCentroid = aMesh.getVertices(neighborCentroidIdx);
+                        
+        //                 // int neighborCentroidId = nodes.get(neighborCentroidIdx).getId();
+        //                 // String neighborCentroidName = nodes.get(neighborCentroidIdx).getName();
+
+        //                 node2 = new Node(neighborCentroidIdx, "Node2", elevation);
+        //                 drawn.add(Set.of(p, neighbour));
+        //                 neighborGraph.addNode(node2);    
+        //                 neighborGraph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
+        //             }
+        //         }
+        //     }
         // }
 
-        System.out.println("==============AFTER ADDDING NODES=============================");
-        System.out.println(graph.toString());
-        System.out.println(graph.getNodes().get(0).getName());
-        System.out.println("========================================================");
-        
-
-        // iterate through all centroids that are on the land (cities, roads)
-        for(int i = 0; i < nodes.size(); i++) {
-            Structs.Polygon poly = aMesh.getPolygons(nodes.get(i).getId()); // get polygon at index i
-
-            // int polyCentroid = poly.getCentroidIdx();
-            Node node1 = nodes.get(i); 
-            System.out.println("OUTER LOOP POLYGON AT INDEX "+ i +" has ID: " + nodes.get(i).getId() + " And Name: " + nodes.get(i).getName());
+        Set<Set<Structs.Polygon>> drawn = new HashSet<>();
+        for(int i=0; i<nodes.size(); i++) {
+            Structs.Polygon p = aMesh.getPolygons(i);
+            Node node1 = null;
             Node node2 = null;
-            for (int j=0; j < poly.getNeighborIdxsCount(); j++){
-                Structs.Polygon neighborPoly = aMesh.getPolygons(poly.getNeighborIdxs(j));
-                if(isLandPolygon(neighborPoly)){
-                    // int neighborCentroid = neighborPoly.getCentroidIdx();
-                    System.out.println("======================INNER LOOP=====================");
-                    node2 = nodes.get(j); //poly.getNeighborIdxs(j) instead of j?
-                    System.out.println("INNER LOOP POLYGON AT INDEX "+ j +" has ID: " + nodes.get(j).getId() + " And Name: " + nodes.get(j).getName());
-                }
-                if (node2 != null){
-                    System.out.println("Node Names for Edges: " + node1.getName());
-                    System.out.println("Node Names for Edges: " + node2.getName());
-                    graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
+
+            node1 = nodes.get(i);
+            neighborGraph.addNode(node1);
+
+            for(int j=0; j<p.getNeighborIdxsCount(); j++){
+                Structs.Polygon neighbour = aMesh.getPolygons(p.getNeighborIdxs(j));
+                int neighborCentroidIdx = neighbour.getCentroidIdx();
+                
+                if(isLandPolygon(neighbour) && !drawn.contains(Set.of(p, neighbour))){
+                    // get centroid of neighbor poly
+                    
+                    for(int k=0; k<nodes.size(); k++) {
+                        if(nodes.get(k).getId() == neighborCentroidIdx){
+                            node2 = nodes.get(k);
+                        }
+                    }
+                    // node2 = nodes.get(p.getNeighborIdxs(j));
+                    drawn.add(Set.of(p, neighbour));
+                    neighborGraph.addNode(node2);
+                    neighborGraph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
                 }
             }
         }
 
-        System.out.println("==============AFTER ADDING EDGES=============================");
-        System.out.println(graph.toString());
-        System.out.println("========================================================");
+        System.out.println(neighborGraph.toString());
+
+
+        
+        // for(int i = 0; i < nodes.size(); i++) {
+        //     Structs.Polygon poly = aMesh.getPolygons(nodes.get(i).getId());
+
+        //     Node node1 = nodes.get(i); 
+        //     Node node2 = null;
+        //     for (int j=0; j < poly.getNeighborIdxsCount(); j++){
+        //         Structs.Polygon neighborPoly = aMesh.getPolygons(poly.getNeighborIdxs(j));
+        //         if(isLandPolygon(neighborPoly)){
+        //             node2 = nodes.get(j);
+        //         }
+        //         if (node2 != null){
+        //             graph.addEdge(new Edge(node1, node2, random.nextInt(1, 5+1)));
+        //         }
+        //     }
+        // }
+
 
         
         System.out.println("===============================PATHFINDING===========================");
         PathFinder<Edge> algorithm = new DijkstrasAlgorithm();
-        List<Edge> path = algorithm.findPath(graph.getNodes().get(0), graph.getNodes().get(1), graph);
+        System.out.println(neighborGraph.getNodes().get(0).getName());
+        System.out.println(neighborGraph.getNodes().get(1).getName());
+        System.out.println(neighborGraph.getNodes().get(2).getName());
+        System.out.println(neighborGraph.getNodes().get(3).getName());
+        System.out.println(neighborGraph.getNodes().get(4).getName());
+        System.out.println(neighborGraph.getNodes().get(5).getName());
+        System.out.println(neighborGraph.getNodes().get(6).getName());
+        System.out.println(neighborGraph.getNodes().get(7).getName());
+        System.out.println("=======================================");
+        System.out.println(graph.getNodes().get(0).getName());
+        System.out.println(graph.getNodes().get(1).getName());
+        List<Edge> path = algorithm.findPath(neighborGraph.getNodes().get(0), neighborGraph.getNodes().get(6), neighborGraph);
         
 
         if (path.isEmpty()) {
