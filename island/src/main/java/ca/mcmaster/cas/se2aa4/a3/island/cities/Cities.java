@@ -148,7 +148,6 @@ public class Cities {
             }
         }
 
-        System.out.println(neighborGraph.toString());
 
 
         
@@ -172,19 +171,7 @@ public class Cities {
         
         System.out.println("===============================PATHFINDING===========================");
         PathFinder<Edge> algorithm = new DijkstrasAlgorithm();
-        System.out.println(neighborGraph.getNodes().get(0).getName());
-        System.out.println(neighborGraph.getNodes().get(1).getName());
-        System.out.println(neighborGraph.getNodes().get(2).getName());
-        System.out.println(neighborGraph.getNodes().get(3).getName());
-        System.out.println(neighborGraph.getNodes().get(4).getName());
-        System.out.println(neighborGraph.getNodes().get(5).getName());
-        System.out.println(neighborGraph.getNodes().get(6).getName());
-        System.out.println(neighborGraph.getNodes().get(7).getName());
-        System.out.println("=======================================");
-        System.out.println(graph.getNodes().get(0).getName());
-        System.out.println(graph.getNodes().get(1).getName());
         List<Edge> path = algorithm.findPath(neighborGraph.getNodes().get(0), neighborGraph.getNodes().get(6), neighborGraph);
-        
 
         if (path.isEmpty()) {
             System.out.println("No path found");
@@ -201,45 +188,16 @@ public class Cities {
 
                 System.out.println("(ID:" + sourceID + ") " + sourceName + " -> " + "(ID:" + destinationID + ") " + destinationName + " (" + weight + ")");
                 totalWeight += edge.getWeight();
-
             }
             System.out.println("Shortest Path Total Weight: " + totalWeight);
         }
         
-
-        // for (int i=0; i<numCities; i++) {
-        //     Node capital = nodes.get(0);
-        //     Node city = nodes.get(i);
-            
-        //     algorithm = new DijkstrasAlgorithm();
-        //     path = algorithm.findPath(graph.getNodes().get(0), graph.getNodes().get(i), graph);
-        // }
-        
         System.out.println("==================================================================");
-        // StarNetwork(graph.getNodes());
 
         
         
         return iMesh.build();
     }
-
-
-    // public void StarNetwork(List<Node> nodes){
-    //     // Connect capital to every other city
-    //     Node capital = nodes.get(0);
-    //     // System.out.println(capital.getName());
-
-    //     for (int i = 1; i < nodes.size(); i++) {
-    //         Node city = nodes.get(i);
-    //         Structs.Vertex capitalCentroid = aMesh.getVertices(aMesh.getPolygons(nodes.get(0).getId()).getCentroidIdx());
-    //         Structs.Vertex cityCentroid = aMesh.getVertices(aMesh.getPolygons(nodes.get(i).getId()).getCentroidIdx());
-            
-    //         graph.addEdge(new Edge(capital, city, random.nextInt(1, 5+1)));
-    //         // List<Edge> path = dijkstra.findPath(capital, city, graph);
-    //     }
-
-    //     // return iMesh.build();
-    // }
 
     private boolean isLandPolygon(Structs.Polygon poly) {
         return poly.getProperties(0).getValue() == Properties.landColors ||
