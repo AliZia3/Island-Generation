@@ -49,6 +49,7 @@ Inputs:
 5. --biomes: arguments include grassland and desert
 6. --seed argument can be included to generate a previous mesh
 7. --elevation argument include volcano/rockymountain/both
+8. --cities gives random number of cities (capital (blue), city(red), village(brown), hamlet(purple))
 
 ```
 java -jar island/island.jar -i img/irregular.mesh -o img/output.mesh --mode lagoon --shape circle --lakes 10 --rivers 10 --aquifers 20 --biomes grassland --elevation volcano --cities 10
