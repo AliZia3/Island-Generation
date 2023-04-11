@@ -36,6 +36,27 @@ public class Properties {
     public static String normalTemp = "15";
     public static String coldTemp = "5";
 
+
+    public static Structs.Property getCitiesColorProps(int nodeType) {
+        Structs.Property colorProp;
+        if(nodeType == 0) colorProp = getCapitalColorProps();
+        else if (nodeType == 1) colorProp = getCityColorProps();
+        else if(nodeType==2) colorProp = getVillagesColorProps();
+        else if (nodeType==3) colorProp = getHamletsColorProps();
+        else colorProp = getRoadColorProps();
+        return colorProp;
+    }
+
+    public static Structs.Property getCitiesSizeProps(int nodeType) {
+        Structs.Property sizeProps;
+        if(nodeType == 0) sizeProps = getCapitalSizeProps();
+        else if (nodeType == 1) sizeProps = getCitySizeProps();
+        else if(nodeType==2) sizeProps = getVillagesSizeProps();
+        else if (nodeType==3) sizeProps = getHamletsSizeProps();
+        else sizeProps = getRoadSizeProps();
+        return sizeProps;
+    }
+
     public static Structs.Property getHamletsColorProps() {
         return Structs.Property.newBuilder()
                 .setKey("rgb_color")
@@ -105,15 +126,6 @@ public class Properties {
                 .setValue("1")
                 .build();
     }
-
-    
-
-    // public static Structs.Property getRoadProps() {
-    //     Structs.Property color = Structs.Property.newBuilder().setKey("rgb_color").setValue("0,0,0,").build();
-    //     Structs.Property vertexThickness = Property.newBuilder().setKey("thickness").setValue(1).build();
-    //     Vertex withProperties = Vertex.newBuilder(v).addProperties(color).addProperties(vertexThickness).build();
-    //     verticesWithProps.add(withProperties);
-    // }
 
     public static Structs.Property getLandHighProps() {
         return Structs.Property.newBuilder()

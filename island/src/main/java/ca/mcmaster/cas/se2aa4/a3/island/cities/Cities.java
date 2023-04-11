@@ -1,15 +1,25 @@
 package ca.mcmaster.cas.se2aa4.a3.island.cities;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.Properties.Properties;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
+import ca.mcmaster.cas.se2aa4.a4.pathfinder.DijkstrasAlgorithm;
+import ca.mcmaster.cas.se2aa4.a4.pathfinder.PathFinder;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.DirectedGraph;
+import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Edge;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 
 public class Cities {
     private Structs.Mesh aMesh;
     private Random random;
+    // private Graph graph;
+    // private PathFinder<Edge> dijkstra;
+
 
     public Cities(Structs.Mesh iMesh) {
         this.aMesh = iMesh;
@@ -23,50 +33,39 @@ public class Cities {
             .addAllPolygons(aMesh.getPolygonsList());
 
         Graph graph = new DirectedGraph();
+        boolean isFirstIteration = true;
 
-        // Adds nodes onto graph
-        boolean firstIteration = true;
         for (int i = 0; i < aMesh.getPolygonsCount(); i++) {
-            Node nodeType = new Node(0, null, 0);
+            Structs.Polygon poly = aMesh.getPolygons(i);
+            int centroidIdx = poly.getCentroidIdx();
             int elevation = random.nextInt(1, 100 + 1);
-            int randomNodeType = random.nextInt(0, 2 + 1); // Random Node type
-            Structs.Polygon poly = aMesh.getPolygons(i); // Get polygon
-            int centroid = poly.getCentroidIdx(); // get centroid index of polygon
-            Structs.Vertex.Builder c = Structs.Vertex.newBuilder(aMesh.getVertices(centroid)); //create vertex at that centroid location
+            int nodeType = -1;
 
             if (numCities > 0 && isLandPolygon(poly)) {
-                // If first ieration create a capital node
-                if (firstIteration) {
-                    // Make centroid index id??
-                    nodeType = new Node(centroid, "Capital", elevation);
-                    c.addProperties(Properties.getCapitalColorProps()).addProperties(Properties.getCapitalSizeProps());
-                    firstIteration = false;
-                }
-                else {
-                    if (randomNodeType == 0) {
-                        //can also make it counter instead of i if want more organized (i gives polygon index)
-                        nodeType = new Node(centroid, "City", elevation);
-                        c.addProperties(Properties.getCityColorProps()).addProperties(Properties.getCitySizeProps());
-                    } 
-                    else if (randomNodeType == 1) {
-                        nodeType = new Node(centroid, "Village", elevation);
-                        c.addProperties(Properties.getVillagesColorProps()).addProperties(Properties.getVillagesSizeProps());
-                    } 
-                    else if (randomNodeType == 2) {
-                        nodeType = new Node(centroid, "Hamlet", elevation);
-                        c.addProperties(Properties.getHamletsColorProps()).addProperties(Properties.getHamletsSizeProps());
-                    } 
-                }
+                nodeType = isFirstIteration ? 0 : random.nextInt(1, 3);
+                isFirstIteration = false;
                 numCities--;
+            } else if (isLandPolygon(poly)) {
+                nodeType = 4;
             }
-            else if (isLandPolygon(poly)) {
-                nodeType = new Node(centroid, "Road", elevation);
-                c.addProperties(Properties.getRoadColorProps()).addProperties(Properties.getRoadSizeProps());
+
+            if (nodeType != -1) {
+                String name = null;
+                Structs.Vertex.Builder centroidVertex = Structs.Vertex.newBuilder(aMesh.getVertices(centroidIdx))
+                        .addProperties(Properties.getCitiesColorProps(nodeType))
+                        .addProperties(Properties.getCitiesSizeProps(nodeType));
+
+                if (nodeType == 0) name = "Capital";
+                else if (nodeType == 1) name = "City";
+                else if (nodeType == 2) name = "Village";
+                else if (nodeType == 3) name = "Hamlet";
+                else if (nodeType == 4) name = "Hamlet";
+                
+
+                Node node = new Node(centroidIdx, name, elevation);
+                graph.addNode(node);
+                iMesh.setVertices(centroidIdx, centroidVertex);
             }
-            iMesh.setVertices(centroid, c);
-            
-            if(nodeType.getName() != null)
-                graph.addNode(nodeType);
         }
 
         return iMesh.build();
