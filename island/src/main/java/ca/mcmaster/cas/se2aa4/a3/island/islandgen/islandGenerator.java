@@ -11,7 +11,7 @@ import ca.mcmaster.cas.se2aa4.a3.island.Lagoon.Lagoon;
 import ca.mcmaster.cas.se2aa4.a3.island.aquifers.Aquifers;
 import ca.mcmaster.cas.se2aa4.a3.island.beaches.Beaches;
 import ca.mcmaster.cas.se2aa4.a3.island.biomes.Biomes;
-import ca.mcmaster.cas.se2aa4.a3.island.cities.Cities;
+// import ca.mcmaster.cas.se2aa4.a3.island.cities.Cities;
 import ca.mcmaster.cas.se2aa4.a3.island.configuration.Configuration;
 import ca.mcmaster.cas.se2aa4.a3.island.elevation.*;
 import ca.mcmaster.cas.se2aa4.a3.island.lakes.Lakes;
@@ -41,7 +41,7 @@ public class islandGenerator {
         mesh = new Plains().addElevation(mesh);
         mesh = new Temp(mesh).enrichTemp(); // index 4
         mesh = new Biomes(mesh).enrichBiomes();
-        mesh = new Cities(mesh).generateCities(Integer.parseInt(config.cities()));
+        // mesh = new Cities(mesh).generateCities(Integer.parseInt(config.cities()));
 
         // Seed generation
         SeedGen seedGen = new SeedGen();
