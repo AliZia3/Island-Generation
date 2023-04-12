@@ -1,24 +1,15 @@
 package ca.mcmaster.cas.se2aa4.a3.island.cities;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
-
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a3.island.Properties.Properties;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
-import ca.mcmaster.cas.se2aa4.a4.pathfinder.DijkstrasAlgorithm;
-import ca.mcmaster.cas.se2aa4.a4.pathfinder.PathFinder;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.DirectedGraph;
-import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Edge;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 
 public class Cities {
     private Structs.Mesh aMesh;
     private Random random;
-    // private Graph graph;
-    // private PathFinder<Edge> dijkstra;
 
 
     public Cities(Structs.Mesh iMesh) {
@@ -46,6 +37,7 @@ public class Cities {
                 isFirstIteration = false;
                 numCities--;
             } else if (isLandPolygon(poly)) {
+                // Road
                 nodeType = 4;
             }
 
@@ -59,7 +51,7 @@ public class Cities {
                 else if (nodeType == 1) name = "City";
                 else if (nodeType == 2) name = "Village";
                 else if (nodeType == 3) name = "Hamlet";
-                else if (nodeType == 4) name = "Hamlet";
+                else if (nodeType == 4) name = "Road";
                 
 
                 Node node = new Node(centroidIdx, name, elevation);
@@ -67,7 +59,6 @@ public class Cities {
                 iMesh.setVertices(centroidIdx, centroidVertex);
             }
         }
-
         return iMesh.build();
     }
 

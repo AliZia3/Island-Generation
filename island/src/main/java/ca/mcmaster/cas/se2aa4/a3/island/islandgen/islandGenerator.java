@@ -32,14 +32,14 @@ public class islandGenerator {
         biomeArg = (config.biomes());
         Structs.Mesh mesh = registerShape();
         if (config.mode() != null && config.mode().equals("lagoon"))
-            mesh = new Lagoon(mesh).build(); // adds lagoon to mesh
-        mesh = new Aquifers(mesh).enrichAquifers(config.aquifer()); // adds aquifer
+            mesh = new Lagoon(mesh).build(); 
+        mesh = new Aquifers(mesh).enrichAquifers(config.aquifer()); 
         mesh = new Lakes(mesh).generateLakes(Integer.parseInt(config.lakes()));
         mesh = new Rivers(mesh).generateRivers(Integer.parseInt(config.rivers()));
         mesh = registerElevation(mesh);
         mesh = new Beaches(mesh).enrichBeaches();
         mesh = new Plains().addElevation(mesh);
-        mesh = new Temp(mesh).enrichTemp(); // index 4
+        mesh = new Temp(mesh).enrichTemp(); 
         mesh = new Biomes(mesh).enrichBiomes();
         mesh = new Cities(mesh).generateCities(Integer.parseInt(config.cities()));
 
