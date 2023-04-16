@@ -64,7 +64,7 @@ public class Cities {
             }
         }
         StarNetwork starNetwork = new StarNetwork(graph, aMesh);
-        System.out.println(starNetwork);
+        // System.out.println(starNetwork);
 
         return iMesh.build();
     }
