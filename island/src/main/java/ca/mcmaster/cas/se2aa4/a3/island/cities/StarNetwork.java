@@ -6,7 +6,6 @@ import java.util.Random;
 import ca.mcmaster.cas.se2aa4.a2.io.Structs;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.DijkstrasAlgorithm;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.PathFinder;
-import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.DirectedGraph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Graph;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Node;
 import ca.mcmaster.cas.se2aa4.a4.pathfinder.adt.Edge;
@@ -24,8 +23,7 @@ public class StarNetwork {
         printPathBetweenCities();
     }
 
-    // Should connect every node to its neighbors with an edge and should do this
-    // for all edges
+    // Should connect every node to its neighbors with an edge and should do this for all edges
     public void connectEdges() {
         // Connecting all neighboring centroids with graph edges
         for (Structs.Polygon p : aMesh.getPolygonsList()) {
@@ -39,17 +37,17 @@ public class StarNetwork {
 
     // Should print the right path between capital to a city
     public void printPathBetweenCities() {
-        System.out.println("===============================PATHFINDING===========================");
+        // System.out.println("===============================PATHFINDING===========================");
         PathFinder<Edge> algorithm = new DijkstrasAlgorithm();
         List<Edge> path = algorithm.findPath(graph.getNodes().get(0), graph.getNodes().get(1), graph);
-        System.out.println("NAME FOR NODE 1: " + graph.getNodes().get(0).getName());
-        System.out.println("NAME FOR NODE 2: " + graph.getNodes().get(1).getName());
+        // System.out.println("NAME FOR NODE 1: " + graph.getNodes().get(0).getName());
+        // System.out.println("NAME FOR NODE 2: " + graph.getNodes().get(1).getName());
 
         if (path.isEmpty()) {
-            System.out.println("No path found");
+            // System.out.println("No path found");
         } else {
             double totalWeight = 0;
-            System.out.println("Path found:");
+            // System.out.println("Path found:");
 
             for (Edge edge : path) {
                 int destinationID = edge.getDestination().getId();
@@ -58,14 +56,14 @@ public class StarNetwork {
                 String destinationName = edge.getDestination().getName();
                 double weight = edge.getWeight();
 
-                System.out.println("(ID:" + sourceID + ") " + sourceName + " -> " + "(ID:" + destinationID + ") "
-                        + destinationName + " (" + weight + ")");
+                // System.out.println("(ID:" + sourceID + ") " + sourceName + " -> " + "(ID:" + destinationID + ") "
+                        // + destinationName + " (" + weight + ")");
                 totalWeight += edge.getWeight();
             }
-            System.out.println("Shortest Path Total Weight: " + totalWeight);
+            // System.out.println("Shortest Path Total Weight: " + totalWeight);
         }
 
-        System.out.println("==================================================================");
+        // System.out.println("==================================================================");
     }
 
 }
