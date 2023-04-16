@@ -24,7 +24,8 @@ public class StarNetwork {
         printPathBetweenCities();
     }
 
-    // Should connect every node to its neighbors with an edge and should do this for all edges
+    // Should connect every node to its neighbors with an edge and should do this
+    // for all edges
     public void connectEdges() {
         // Connecting all neighboring centroids with graph edges
         for (Structs.Polygon p : aMesh.getPolygonsList()) {
